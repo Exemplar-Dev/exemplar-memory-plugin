@@ -1,21 +1,5 @@
 {
   "name": "exemplar-memory",
-  "version": "0.1.0",
-  "description": "Persistent memory for Claude Code via Exemplar memory_tool MCP. Remembers preferences and facts across sessions.",
-  "author": {
-    "name": "Exemplar",
-    "email": "support@exemplar.dev"
-  },
-  "homepage": "https://exemplar.dev",
-  "repository": "https://github.com/exemplar-dev/exemplar-memory-plugin",
-  "keywords": ["memory", "mcp", "semantic-search", "personalization", "exemplar"],
-  "userConfig": {
-    "api_key": {
-      "type": "string",
-      "title": "Exemplar API Key",
-      "description": "Org-scoped eis_ key from Exemplar Console → Account → Tokens.",
-      "sensitive": true,
-      "required": true
-    }
-  }
+  "version": "0.1.1",
+  "description": "Persistent memory for Claude Code via Exemplar memory_tool MCP. Remembers preferences and facts across sessions."
 }

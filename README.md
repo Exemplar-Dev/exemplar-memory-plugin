@@ -11,18 +11,26 @@ Claude Code plugin for **Exemplar long-term memory** — store and recall prefer
 
 No base URL or org id to configure — the key carries your org context.
 
-### 2. Install the plugin
+### 2. Set your API key in the environment
 
-In Claude Code:
+Claude Code reads **`EXEMPLAR_API_KEY`** for MCP auth. Add to your shell profile or export before each session:
+
+```bash
+export EXEMPLAR_API_KEY="eis_your_org_api_key"
+```
+
+On macOS with zsh, add the line above to `~/.zshrc`, then run `source ~/.zshrc`.
+
+### 3. Install the plugin
+
+In Claude Code (same terminal where `EXEMPLAR_API_KEY` is set):
 
 ```bash
 /plugin marketplace add Exemplar-Dev/exemplar-memory-plugin
 /plugin install exemplar-memory@exemplar-plugins
 ```
 
-When prompted, paste your **`eis_` API key**.
-
-### 3. Confirm it is connected
+### 4. Confirm it is connected
 
 ```bash
 /reload-plugins
@@ -99,7 +107,8 @@ Claude should confirm before deleting.
 | Problem | What to try |
 |---------|-------------|
 | No `exemplar-mcp` in `/mcp` | Run `/reload-plugins` or restart Claude Code |
-| Connection / auth errors | Check the `eis_` key in plugin settings; create a new token if needed |
+| Connection / auth errors | Ensure `EXEMPLAR_API_KEY` is set (`echo $EXEMPLAR_API_KEY`), then `/reload-plugins` |
+| Invalid manifest on install | Update Claude Code to the latest version, then `/plugin marketplace update exemplar-plugins` and reinstall |
 | Memories not found | Use the same `user_id` scope when recalling; try *"search memory for …"* explicitly |
 | Plugin not listed | Re-run `/plugin marketplace add Exemplar-Dev/exemplar-memory-plugin` |
 

@@ -7,11 +7,13 @@ Full setup and usage: [repository README](../README.md).
 ## Quick install
 
 ```bash
+export EXEMPLAR_API_KEY="eis_your_org_api_key"
+
 /plugin marketplace add Exemplar-Dev/exemplar-memory-plugin
 /plugin install exemplar-memory@exemplar-plugins
 ```
 
-API key: [Exemplar Console](https://console.exemplar.dev) → Account → Tokens (`eis_…`).
+API key: [Exemplar Console](https://console.exemplar.dev) → Account → Tokens.
 
 Then `/reload-plugins` and `/mcp` — confirm **`exemplar-mcp`** and **`memory_tool`**.
 
