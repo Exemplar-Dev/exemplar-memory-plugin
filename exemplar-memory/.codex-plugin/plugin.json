@@ -1,0 +1,7 @@
+{
+  "name": "exemplar-memory",
+  "version": "0.1.4",
+  "description": "Persistent memory for Codex via Exemplar memory_tool MCP. Remembers preferences and facts across sessions.",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

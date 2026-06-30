@@ -2,7 +2,7 @@
 
 Persistent memory for AI coding agents — store and recall preferences and facts across sessions via **`memory_tool`**.
 
-Works with **Claude Code**, **Codex** (plugin), and **Cursor**, **Claude Desktop**, **VS Code**, **Windsurf**, **Cline** (manual MCP).
+Works with **Claude Code** (plugin), **Codex** (`codex mcp add`), and **Cursor**, **Claude Desktop**, **VS Code**, **Windsurf**, **Cline** (manual MCP).
 
 ## Get started
 
@@ -31,20 +31,39 @@ Add `export EXEMPLAR_API_KEY=...` to `~/.zshrc` so it persists.
 
 ---
 
-## Codex (plugin — recommended)
+## Codex (MCP — recommended)
 
-Codex reads the same marketplace catalog (Claude-compatible format).
+Codex uses **`~/.codex/config.toml`**, not Claude Code `/plugin` commands. CLI and IDE extension share this config.
 
 ```bash
 export EXEMPLAR_API_KEY="eis_your_org_api_key"
 
-codex plugin marketplace add Exemplar-Dev/exemplar-memory-plugin
-codex plugin add exemplar-memory@exemplar-plugins
+codex mcp add exemplar-mcp \
+  --url https://production-api.exemplar.dev/mcp \
+  --bearer-token-env-var EXEMPLAR_API_KEY
 ```
 
-Restart Codex CLI or IDE extension. Start a new thread and confirm `memory_tool` is available.
+Add the `x-api-key` header in `~/.codex/config.toml` (Codex reads the env var name, not the key value):
 
-Or browse: `codex /plugins` → select **exemplar-plugins** marketplace → install **exemplar-memory**.
+```toml
+[mcp_servers.exemplar-mcp]
+url = "https://production-api.exemplar.dev/mcp"
+bearer_token_env_var = "EXEMPLAR_API_KEY"
+
+[mcp_servers.exemplar-mcp.env_http_headers]
+"x-api-key" = "EXEMPLAR_API_KEY"
+```
+
+Add `export EXEMPLAR_API_KEY=...` to `~/.zshrc`. Start Codex and run **`/mcp`** — `exemplar-mcp` should list `memory_tool`.
+
+**Optional plugin (skill + bundled MCP):** add the marketplace, then install from the Codex plugin browser:
+
+```bash
+export EXEMPLAR_API_KEY="eis_your_org_api_key"
+codex plugin marketplace add Exemplar-Dev/exemplar-memory-plugin
+```
+
+In a Codex session, run **`/plugins`** → **exemplar-plugins** tab → install **exemplar-memory**.
 
 ---
 

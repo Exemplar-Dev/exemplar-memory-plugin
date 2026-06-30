@@ -1,29 +1,16 @@
 # Exemplar Memory plugin
 
-Bundled MCP + skill for Claude Code and Codex.
+Bundled MCP + skill for Claude Code. Codex users should prefer **`codex mcp add`** — see [repository README](../README.md#codex-mcp--recommended).
 
-Full setup for all clients: [repository README](../README.md).
-
-## Plugin install
+## Claude Code plugin install
 
 ```bash
 export EXEMPLAR_API_KEY="eis_your_org_api_key"
-```
 
-**Claude Code**
-
-```bash
 /plugin marketplace add Exemplar-Dev/exemplar-memory-plugin
 /plugin install exemplar-memory@exemplar-plugins
 /reload-plugins
 /mcp
-```
-
-**Codex**
-
-```bash
-codex plugin marketplace add Exemplar-Dev/exemplar-memory-plugin
-codex plugin add exemplar-memory@exemplar-plugins
 ```
 
 ## Use in chat
