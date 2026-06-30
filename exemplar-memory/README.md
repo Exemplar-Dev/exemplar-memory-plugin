@@ -1,19 +1,30 @@
 # Exemplar Memory
 
-Persistent memory for Claude Code via **`memory_tool`** — scoped facts and preferences with semantic recall.
+Persistent memory for Claude Code via **`memory_tool`**.
 
-## Install
+Full setup and usage: [repository README](../README.md).
+
+## Quick install
 
 ```bash
-/plugin marketplace add exemplar-dev/exemplar-memory-plugin
+/plugin marketplace add Exemplar-Dev/exemplar-memory-plugin
 /plugin install exemplar-memory@exemplar-plugins
 ```
 
-When prompted, enter your org-scoped `eis_` API key from
-[Exemplar Console](https://console.exemplar.dev) → Account → Tokens.
+API key: [Exemplar Console](https://console.exemplar.dev) → Account → Tokens (`eis_…`).
 
-Restart the session or run `/reload-plugins`, then check `/mcp`.
+Then `/reload-plugins` and `/mcp` — confirm **`exemplar-mcp`** and **`memory_tool`**.
 
-## `memory_tool` actions
+## Use in chat
 
-`add`, `search`, `list`, `get`, `update`, `delete`, `bulk_delete`
+Ask in plain language:
+
+- *Remember that I prefer metric units.*
+- *What do you know about my editor setup?*
+- *Forget my old office address.*
+
+Claude calls `memory_tool` for you.
+
+## Actions
+
+`add` · `search` · `list` · `get` · `update` · `delete` · `bulk_delete`
