@@ -1,0 +1,18 @@
+{
+  "name": "exemplar-plugins",
+  "owner": {
+    "name": "Exemplar",
+    "email": "hello@exemplar.dev"
+  },
+  "metadata": {
+    "description": "Official Exemplar plugins for Claude Code — long-term agent memory via MCP."
+  },
+  "plugins": [
+    {
+      "name": "exemplar-memory",
+      "source": "./exemplar-memory",
+      "description": "Persistent scoped memory for Claude Code. Store and recall user preferences, facts, and standing instructions via memory_tool (semantic search, org-isolated).",
+      "version": "0.1.0"
+    }
+  ]
+}

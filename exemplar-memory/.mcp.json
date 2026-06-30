@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "exemplar-mcp": {
+      "type": "http",
+      "url": "https://production-api.exemplar.dev/mcp",
+      "headers": {
+        "x-api-key": "${user_config.api_key}"
+      }
+    }
+  }
+}
