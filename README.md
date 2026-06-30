@@ -1,124 +1,155 @@
 # exemplar-memory-plugin
 
-Claude Code plugin for **Exemplar long-term memory** — store and recall preferences and facts across sessions.
+Persistent memory for AI coding agents — store and recall preferences and facts across sessions via **`memory_tool`**.
 
-## Setup (first time)
+Works with **Claude Code**, **Codex** (plugin), and **Cursor**, **Claude Desktop**, **VS Code**, **Windsurf**, **Cline** (manual MCP).
 
-### 1. Get an API key
+## Get started
 
-1. Open [Exemplar Console](https://console.exemplar.dev) → **Account** → **Tokens**
-2. Create or copy an org-scoped key that starts with `eis_`
+1. Create an `eis_` API key at [Exemplar Console](https://console.exemplar.dev) → Account → Tokens
+2. Choose your client below (plugin or manual MCP)
+3. Ask in natural language — see [Usage examples](#usage-examples)
 
-No base URL or org id to configure — the key carries your org context.
+Production MCP endpoint: `https://production-api.exemplar.dev/mcp`
 
-### 2. Set your API key in the environment
+---
 
-Claude Code reads **`EXEMPLAR_API_KEY`** for MCP auth. Add to your shell profile or export before each session:
+## Claude Code (plugin — recommended)
 
 ```bash
 export EXEMPLAR_API_KEY="eis_your_org_api_key"
-```
 
-On macOS with zsh, add the line above to `~/.zshrc`, then run `source ~/.zshrc`.
-
-### 3. Install the plugin
-
-In Claude Code (same terminal where `EXEMPLAR_API_KEY` is set):
-
-```bash
 /plugin marketplace add Exemplar-Dev/exemplar-memory-plugin
 /plugin install exemplar-memory@exemplar-plugins
-```
-
-### 4. Confirm it is connected
-
-```bash
 /reload-plugins
 /mcp
 ```
 
-You should see **`exemplar-mcp`** connected and **`memory_tool`** in the tool list (9 tools total).
+Add `export EXEMPLAR_API_KEY=...` to `~/.zshrc` so it persists.
 
-MCP endpoint: `https://production-api.exemplar.dev/mcp`
+**Verify:** `exemplar-mcp` connected, `memory_tool` listed. An OAuth 404 message is harmless if tools show connected.
 
-### 5. Test memory in chat
+---
+
+## Codex (plugin — recommended)
+
+Codex reads the same marketplace catalog (Claude-compatible format).
+
+```bash
+export EXEMPLAR_API_KEY="eis_your_org_api_key"
+
+codex plugin marketplace add Exemplar-Dev/exemplar-memory-plugin
+codex plugin add exemplar-memory@exemplar-plugins
+```
+
+Restart Codex CLI or IDE extension. Start a new thread and confirm `memory_tool` is available.
+
+Or browse: `codex /plugins` → select **exemplar-plugins** marketplace → install **exemplar-memory**.
+
+---
+
+## Cursor (manual MCP)
+
+Add to `~/.cursor/mcp.json` or `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "exemplar-mcp": {
+      "transport": "http",
+      "url": "https://production-api.exemplar.dev/mcp",
+      "headers": {
+        "x-api-key": "eis_your_org_api_key"
+      }
+    }
+  }
+}
+```
+
+Restart Cursor. Settings → MCP to confirm the server is connected.
+
+---
+
+## Claude Desktop (manual MCP)
+
+Claude Desktop uses stdio — bridge with `mcp-remote`:
+
+```json
+{
+  "mcpServers": {
+    "exemplar-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://production-api.exemplar.dev/mcp",
+        "--transport",
+        "http-only",
+        "--header",
+        "x-api-key:eis_your_org_api_key"
+      ]
+    }
+  }
+}
+```
+
+Config: `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS). Restart Claude.
+
+---
+
+## VS Code Copilot (manual MCP)
+
+`.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "exemplar-mcp": {
+      "type": "http",
+      "url": "https://production-api.exemplar.dev/mcp",
+      "headers": {
+        "x-api-key": "eis_your_org_api_key"
+      }
+    }
+  }
+}
+```
+
+---
+
+## Windsurf / Cline
+
+See [exemplar-memory/README.md](./exemplar-memory/README.md) or the [Exemplar Console](https://console.exemplar.dev) Memory tab for config shapes (`serverUrl` on Windsurf).
+
+---
+
+## Usage examples
+
+Talk in plain language — your agent calls `memory_tool` for you.
+
+### Remember
 
 ```
 Remember that I prefer bullet-point answers.
+Remember for user alice that I prefer dark mode.
+Note for future sessions: deploy window is Tuesday 2–4pm UTC.
 ```
+
+### Recall
 
 ```
 What do you know about my formatting preferences?
-```
-
-If Claude stores and recalls the preference, memory is working.
-
----
-
-## “SDK auth failed” with OAuth 404
-
-If `/mcp` shows **✔ connected**, **✔ authenticated**, and lists **9 tools**, but you also see:
-
-```
-SDK auth failed: HTTP 404: Invalid OAuth error response ... nginx ... 404 Not Found
-```
-
-**This is usually harmless.** Claude Code probes for OAuth endpoints (`/.well-known/oauth-*`) that Exemplar does not implement. The probe hits nginx and returns HTML 404 — it does **not** mean your API key failed.
-
-| `/mcp` shows | Meaning |
-|--------------|---------|
-| ✔ connected + tools listed | **Memory works** — ignore the OAuth SDK message |
-| ✘ failed / no tools | Fix `EXEMPLAR_API_KEY` and `/reload-plugins` |
-
-After updating the plugin, run `/plugin marketplace update exemplar-plugins` and reinstall if headers changed.
-
----
-
-## How to use it (end user)
-
-You do **not** call `memory_tool` yourself. Talk to Claude in normal language; it uses the tool when memory is relevant.
-
-### Remember something
-
-```
-Remember that I prefer dark mode and bullet-point answers.
-```
-
-```
-Note for future sessions: our deploy window is Tuesday 2–4pm UTC.
-```
-
-Claude stores a scoped memory (usually under your `user_id`).
-
-### Recall later (same or new session)
-
-```
-What do you know about my UI preferences?
-```
-
-```
 What did I ask you to remember about deploy windows?
+Search memory for user alice: UI preferences?
 ```
 
-Claude searches memory before answering.
-
-### List or update
+### List / update / forget
 
 ```
 List what you have stored about me.
-```
-
-```
 Update my theme preference — I switched to light mode.
+Forget my dietary restrictions.
 ```
-
-### Forget
-
-```
-Forget what you know about my dietary restrictions.
-```
-
-Claude should confirm before deleting.
 
 ---
 
@@ -126,29 +157,27 @@ Claude should confirm before deleting.
 
 | Topic | Guidance |
 |-------|----------|
-| **Who is the memory for?** | Memories are scoped by `user_id` (and optionally `session_id`, `agent_id`, `app_id`). If you work alone, defaults are fine. For a shared machine, say *"remember this for user alice"* so recall stays scoped. |
-| **What to store** | Preferences, standing rules, facts you explicitly asked to remember — not one-off chat context. |
-| **New session** | Install once; memories persist across Claude Code sessions. |
-| **Approval** | First `memory_tool` use may ask you to approve the tool — allow it to enable recall and storage. |
+| **Scopes** | Memories need at least one of `user_id`, `session_id`, `agent_id`, `app_id`. Say *"for user alice"* on shared machines. |
+| **What to store** | Preferences, standing rules, explicit facts — not ephemeral chat context. |
+| **Cross-session** | Install once; memories persist across sessions. |
+| **Tool approval** | Approve `memory_tool` on first use if prompted. |
 
 ---
 
 ## Troubleshooting
 
-| Problem | What to try |
-|---------|-------------|
-| No `exemplar-mcp` in `/mcp` | Run `/reload-plugins` or restart Claude Code |
-| Connection / auth errors | Ensure `EXEMPLAR_API_KEY` is set (`echo $EXEMPLAR_API_KEY`), then `/reload-plugins` |
-| OAuth / SDK auth failed 404 | Ignore if status is **connected** and tools are listed — see section above |
-| Invalid manifest on install | Update Claude Code, then `/plugin marketplace update exemplar-plugins` and reinstall |
-| Memories not found | Use the same `user_id` scope when recalling; try *"search memory for …"* explicitly |
-| Plugin not listed | Re-run `/plugin marketplace add Exemplar-Dev/exemplar-memory-plugin` |
+| Problem | Fix |
+|---------|-----|
+| Plugin install fails | Set `EXEMPLAR_API_KEY` before install; update Claude Code |
+| OAuth SDK 404 in `/mcp` | Ignore if status is **connected** and tools are listed |
+| No tools | `/reload-plugins` or restart the client |
+| Auth errors | `echo $EXEMPLAR_API_KEY` — recreate key if needed |
 
 ---
 
-## What gets installed
+## What gets installed (plugin)
 
-- **MCP** — `memory_tool` with actions: `add`, `search`, `list`, `get`, `update`, `delete`, `bulk_delete`
-- **Skill** — guides Claude on when and how to use memory (invoked automatically)
+- **MCP** — `memory_tool` (`add`, `search`, `list`, `get`, `update`, `delete`, `bulk_delete`)
+- **Skill** — when Claude/Codex should use memory automatically
 
-See [exemplar-memory/README.md](./exemplar-memory/README.md) for a short reference.
+No Python SDK required for plugin mode.

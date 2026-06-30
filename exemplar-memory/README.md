@@ -1,31 +1,38 @@
-# Exemplar Memory
+# Exemplar Memory plugin
 
-Persistent memory for Claude Code via **`memory_tool`**.
+Bundled MCP + skill for Claude Code and Codex.
 
-Full setup and usage: [repository README](../README.md).
+Full setup for all clients: [repository README](../README.md).
 
-## Quick install
+## Plugin install
 
 ```bash
 export EXEMPLAR_API_KEY="eis_your_org_api_key"
-
-/plugin marketplace add Exemplar-Dev/exemplar-memory-plugin
-/plugin install exemplar-memory@exemplar-plugins
 ```
 
-API key: [Exemplar Console](https://console.exemplar.dev) → Account → Tokens.
+**Claude Code**
 
-Then `/reload-plugins` and `/mcp` — confirm **`exemplar-mcp`** and **`memory_tool`**.
+```bash
+/plugin marketplace add Exemplar-Dev/exemplar-memory-plugin
+/plugin install exemplar-memory@exemplar-plugins
+/reload-plugins
+/mcp
+```
+
+**Codex**
+
+```bash
+codex plugin marketplace add Exemplar-Dev/exemplar-memory-plugin
+codex plugin add exemplar-memory@exemplar-plugins
+```
 
 ## Use in chat
 
-Ask in plain language:
-
-- *Remember that I prefer metric units.*
-- *What do you know about my editor setup?*
-- *Forget my old office address.*
-
-Claude calls `memory_tool` for you.
+```
+Remember that I prefer metric units.
+What do you know about my editor setup?
+Forget my old office address.
+```
 
 ## Actions
 
