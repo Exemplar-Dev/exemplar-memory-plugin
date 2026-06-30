@@ -1,5 +1,5 @@
 {
   "name": "exemplar-memory",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Persistent memory for Claude Code via Exemplar memory_tool MCP. Remembers preferences and facts across sessions."
 }

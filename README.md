@@ -31,19 +31,13 @@ Add `export EXEMPLAR_API_KEY=...` to `~/.zshrc` so it persists.
 
 ---
 
-## Codex (MCP — recommended)
+## Codex
 
-Codex uses **`~/.codex/config.toml`**, not Claude Code `/plugin` commands. CLI and IDE extension share this config.
+Export your key first (`export EXEMPLAR_API_KEY="eis_..."` in `~/.zshrc`).
 
-```bash
-export EXEMPLAR_API_KEY="eis_your_org_api_key"
+### Option A — Direct MCP (fastest, MCP only)
 
-codex mcp add exemplar-mcp \
-  --url https://production-api.exemplar.dev/mcp \
-  --bearer-token-env-var EXEMPLAR_API_KEY
-```
-
-Add the `x-api-key` header in `~/.codex/config.toml` (Codex reads the env var name, not the key value):
+Add to `~/.codex/config.toml`:
 
 ```toml
 [mcp_servers.exemplar-mcp]
@@ -54,16 +48,36 @@ bearer_token_env_var = "EXEMPLAR_API_KEY"
 "x-api-key" = "EXEMPLAR_API_KEY"
 ```
 
-Add `export EXEMPLAR_API_KEY=...` to `~/.zshrc`. Start Codex and run **`/mcp`** — `exemplar-mcp` should list `memory_tool`.
+Restart Codex and run **`/mcp`** — confirm `memory_tool` is listed.
 
-**Optional plugin (skill + bundled MCP):** add the marketplace, then install from the Codex plugin browser:
+Or use the CLI (then add `env_http_headers` in config.toml if needed):
+
+```bash
+codex mcp add exemplar-mcp \
+  --url https://production-api.exemplar.dev/mcp \
+  --bearer-token-env-var EXEMPLAR_API_KEY
+```
+
+### Option B — Plugin (recommended: MCP + skill)
+
+Registers this repo’s Codex marketplace (`.agents/plugins/marketplace.json`), then install from the plugin browser:
 
 ```bash
 export EXEMPLAR_API_KEY="eis_your_org_api_key"
+
 codex plugin marketplace add Exemplar-Dev/exemplar-memory-plugin
 ```
 
-In a Codex session, run **`/plugins`** → **exemplar-plugins** tab → install **exemplar-memory**.
+Restart Codex, run **`/plugins`** → **Exemplar Plugins** tab → install **exemplar-memory**.
+
+> **Do not combine A and B.** The plugin registers `exemplar-mcp` via `.codex-mcp.json` — a manual `[mcp_servers.exemplar-mcp]` block would duplicate it.
+
+**Upgrade / remove:**
+
+```bash
+codex plugin marketplace upgrade
+codex plugin marketplace remove exemplar-plugins
+```
 
 ---
 

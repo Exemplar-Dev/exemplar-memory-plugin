@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "exemplar-mcp": {
+      "url": "https://production-api.exemplar.dev/mcp",
+      "bearer_token_env_var": "EXEMPLAR_API_KEY",
+      "env_http_headers": {
+        "x-api-key": "EXEMPLAR_API_KEY"
+      }
+    }
+  }
+}

@@ -1,7 +1,19 @@
 {
   "name": "exemplar-memory",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Persistent memory for Codex via Exemplar memory_tool MCP. Remembers preferences and facts across sessions.",
   "skills": "./skills/",
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.codex-mcp.json",
+  "interface": {
+    "displayName": "Exemplar Memory",
+    "shortDescription": "Long-term scoped memory for coding agents",
+    "longDescription": "Store and recall user preferences, standing rules, and explicit facts across Codex sessions via memory_tool (semantic search, org-isolated).",
+    "developerName": "Exemplar",
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Remember that I prefer bullet-point answers.",
+      "What do you know about my formatting preferences?",
+      "Search memory for my UI theme preferences."
+    ]
+  }
 }

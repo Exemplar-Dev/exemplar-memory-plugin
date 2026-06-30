@@ -1,0 +1,20 @@
+{
+  "name": "exemplar-plugins",
+  "interface": {
+    "displayName": "Exemplar Plugins"
+  },
+  "plugins": [
+    {
+      "name": "exemplar-memory",
+      "source": {
+        "source": "local",
+        "path": "./exemplar-memory"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
