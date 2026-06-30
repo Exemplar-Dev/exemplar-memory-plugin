@@ -4,7 +4,9 @@
       "type": "http",
       "url": "https://production-api.exemplar.dev/mcp",
       "headers": {
-        "x-api-key": "${EXEMPLAR_API_KEY}"
+        "x-api-key": "${EXEMPLAR_API_KEY}",
+        "Authorization": "Bearer ${EXEMPLAR_API_KEY}",
+        "Accept": "application/json, text/event-stream"
       }
     }
   }

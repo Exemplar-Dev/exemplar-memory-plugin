@@ -37,9 +37,40 @@ In Claude Code (same terminal where `EXEMPLAR_API_KEY` is set):
 /mcp
 ```
 
-You should see **`exemplar-mcp`** connected and **`memory_tool`** in the tool list.
+You should see **`exemplar-mcp`** connected and **`memory_tool`** in the tool list (9 tools total).
 
 MCP endpoint: `https://production-api.exemplar.dev/mcp`
+
+### 5. Test memory in chat
+
+```
+Remember that I prefer bullet-point answers.
+```
+
+```
+What do you know about my formatting preferences?
+```
+
+If Claude stores and recalls the preference, memory is working.
+
+---
+
+## “SDK auth failed” with OAuth 404
+
+If `/mcp` shows **✔ connected**, **✔ authenticated**, and lists **9 tools**, but you also see:
+
+```
+SDK auth failed: HTTP 404: Invalid OAuth error response ... nginx ... 404 Not Found
+```
+
+**This is usually harmless.** Claude Code probes for OAuth endpoints (`/.well-known/oauth-*`) that Exemplar does not implement. The probe hits nginx and returns HTML 404 — it does **not** mean your API key failed.
+
+| `/mcp` shows | Meaning |
+|--------------|---------|
+| ✔ connected + tools listed | **Memory works** — ignore the OAuth SDK message |
+| ✘ failed / no tools | Fix `EXEMPLAR_API_KEY` and `/reload-plugins` |
+
+After updating the plugin, run `/plugin marketplace update exemplar-plugins` and reinstall if headers changed.
 
 ---
 
@@ -108,7 +139,8 @@ Claude should confirm before deleting.
 |---------|-------------|
 | No `exemplar-mcp` in `/mcp` | Run `/reload-plugins` or restart Claude Code |
 | Connection / auth errors | Ensure `EXEMPLAR_API_KEY` is set (`echo $EXEMPLAR_API_KEY`), then `/reload-plugins` |
-| Invalid manifest on install | Update Claude Code to the latest version, then `/plugin marketplace update exemplar-plugins` and reinstall |
+| OAuth / SDK auth failed 404 | Ignore if status is **connected** and tools are listed — see section above |
+| Invalid manifest on install | Update Claude Code, then `/plugin marketplace update exemplar-plugins` and reinstall |
 | Memories not found | Use the same `user_id` scope when recalling; try *"search memory for …"* explicitly |
 | Plugin not listed | Re-run `/plugin marketplace add Exemplar-Dev/exemplar-memory-plugin` |
 
