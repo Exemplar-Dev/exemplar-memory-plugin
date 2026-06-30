@@ -5,7 +5,7 @@
     "email": "hello@exemplar.dev"
   },
   "metadata": {
-    "description": "Official Exemplar plugins for Claude Code — long-term agent memory via MCP."
+    "description": "Official Exemplar plugins — long-term AI agent memory via MCP for Claude Code and Codex. Persistent preferences, semantic recall, memory_tool."
   },
   "plugins": [
     {
